@@ -10,7 +10,7 @@ body {
 background-image: url("./assets/cold.jpg");
 background-size: cover;
 background-position: bottom;
-transition: 0.4 ease-out;
+transition: 0.4s ease-out;
 }
 .app.warm{
   background-image: url("./assets/warm.jpg");
@@ -93,4 +93,30 @@ main{
   font-size: 48;
   font-weight: 700;
   text-shadow: 3px 3px rgb(50, 50, 70, 0.5);
+}
+
+/* Estilos específicos para telas de tamanho médio e grande (por exemplo, tablets e computadores) */
+@media only screen and (min-width: 768px) {
+  .app {
+    background-image: url("./assets/cold2.jpg");
+  }
+
+  .app.warm {
+    background-image: url("./assets/night.jpg");
+  }
+
+
+  .search-box {
+    width: 50%;
+    margin-left: 24%;
+    padding-top: 70px;
+  }
+  .weather-box{
+    width: 50%;
+    margin-left: 24%;
+ 
+  }
+  .weather-box .weather{
+    
+  }
 }
