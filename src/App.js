@@ -1,26 +1,31 @@
+// App.js
+
 import { useState } from "react";
 import React from "react";
 import fetchData from "./components/api/fetch";
 
-
 function App() {
   const [query, setQuery] = useState("");
-  const [weather, setWeather] = useState({});
+  const [weather, setWeather] = useState({icon: null,});
+  
+
+  
 
   const search = async (evt) => {
     if (evt.key === "Enter") {
       try {
         const result = await fetchData(query);
         setQuery('');
-        setWeather(result);
+        setWeather({
+          ...result,
+          icon: result.weather[0]?.icon || null,
+        });
         console.log(result);
       } catch (error) {
-        // Tratar erro, se necessário
-        console.log(error)
+        console.log("error fetching data", error);
       }
     }
   };
-
   const dateBuilder = (d) => {
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -30,9 +35,8 @@ function App() {
     let month = months[d.getMonth()];
     let year = d.getFullYear();
 
-    return `${day} ${date} ${month} ${year}`
+    return `${day} ${date} ${month} ${year}`;
   }
-
 
   return (
     <div className={(typeof weather.main !== "undefined") ? ((weather.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
@@ -47,7 +51,7 @@ function App() {
             onKeyPress={search}
           />
         </div>
-        {(typeof weather.main != "undefined") ? (
+        {(typeof weather.main !== "undefined") ?
           <div>
             <div className="location-box">
               <div className="location">{weather.name}, {weather.sys.country}</div>
@@ -57,20 +61,28 @@ function App() {
               <div className="temp">
                 {Math.round(weather.main.temp)}º
               </div>
-              <div className="weather">{weather.weather[0].main}</div>
-              
-            </div>
-            
-            <div className="map-box">
-              <div className="map">
-
+              <div className="weather">{weather.weather[0]?.main || 'N/A'}, {weather.weather[0]?.description || 'N/A'}, 
+              {weather.icon && (
+                <img
+                src={`https://openweathermap.org/img/w/${weather.icon}.png`}
+                alt="Weather Icon"
+                className="weather-icon"
+                />
+              )}
               </div>
             </div>
+            <div className="map-box">
+              <div className="map"></div>
+            </div>
           </div>
-        ) : ('')}
+          : ('')}
       </main>
     </div>
   );
 }
 
 export default App;
+
+
+
+
